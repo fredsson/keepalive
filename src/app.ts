@@ -1,8 +1,35 @@
 import { Map, View } from "ol";
-import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
 import {defaults as defaultInteractions, DragRotateAndZoom} from 'ol/interaction';
 import {defaults as defaultControls} from 'ol/control';
+import VectorTileLayer from 'ol/layer/VectorTile';
+import VectorTileSource from 'ol/source/VectorTile';
+import MVT from 'ol/format/MVT';
+import Style from "ol/style/Style";
+import Stroke from "ol/style/Stroke";
+import Fill from "ol/style/Fill";
+
+var country = new Style({
+  stroke: new Stroke({
+    color: 'gray',
+    width: 1
+  }),
+  fill: new Fill({
+    color: 'rgba(20,20,20,0.9)'
+  })
+});
+var vtLayer = new VectorTileLayer({
+  declutter: true,
+  source: new VectorTileSource({
+    maxZoom: 15,
+    format: new MVT({
+      idProperty: 'iso_a3'
+    }),
+    url: 'https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/' +
+      'ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf'
+  }),
+  style: country
+});
+
 export class App {
   public map?: Map;
 
@@ -13,34 +40,8 @@ export class App {
       interactions: defaultInteractions().extend([
         new DragRotateAndZoom()
       ]),
-      /*interactions: defaultInteractions().extend([
-        new DragRotateAndZoom()
-      ]),*/
-      /*interactions: defaultInteractions().extend([
-        new PointerInteraction({
-          handleDownEvent: (p0) => {
-            console.log('woo');
-
-            return true;
-          },
-          handleEvent: (p0) => {
-            console.log('owowowowowo', p0.coordinate);
-            return true;
-          }
-        })
-      ]),
-      controls: defaultControls({zoom: true, rotate: false}).extend([
-        new ZoomToExtent({
-          extent: [
-            813079.7791264898, 5929220.284081122,
-            848966.9639063801, 5936863.986909639
-          ]
-        })
-      ])*/
       layers: [
-        new TileLayer({
-          source: new OSM()
-        })
+        vtLayer
       ],
       view: new View({
         center: [0, 0],
