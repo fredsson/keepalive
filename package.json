@@ -1,0 +1,23 @@
+{
+  "name": "ld46_keepalive",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "watch": "webpack-dev-server --watch",
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/ol": "^6.3.1",
+    "html-webpack-plugin": "^4.2.0",
+    "ts-loader": "^7.0.0",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "ol": "^6.3.1"
+  }
+}
