@@ -1,4 +1,5 @@
 import { Country } from "../model/country";
+import { Subscription } from "../subject";
 
 export class CountryStatisticsView {
   rootElement: HTMLDivElement;
@@ -7,6 +8,8 @@ export class CountryStatisticsView {
   infectedElement: HTMLSpanElement;
   immuneElement: HTMLSpanElement;
   deceasedElement: HTMLSpanElement;
+
+  private subscription: Subscription | undefined = undefined;
 
   constructor(container: HTMLDivElement) {
     this.rootElement = document.createElement('div');
@@ -37,6 +40,14 @@ export class CountryStatisticsView {
   }
 
   public setCountry(country: Country) {
+    if (this.subscription) {
+      this.subscription();
+    }
+
+    this.subscription = country.onPopulationChanged(payload => {
+      this.populationElement.innerText = payload.population.toString();
+      this.deceasedElement.innerText = payload.noOfDeceased.toString();
+    });
     this.nameElement.innerText = country.name;
     this.populationElement.innerText = country.currentPopulation.toString();
     this.infectedElement.innerText = country.infected.toString();

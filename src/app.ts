@@ -6,6 +6,7 @@ import { Country } from "./model/country";
 import { CountryStatisticsView } from "./view/country-statistics-view";
 import { Calendar } from "./model/calendar";
 import { CalendarView } from "./view/calendar-view";
+import { Game } from "./model/game";
 
 var worldSource = new VectorTileSource({
   maxZoom: 15,
@@ -17,49 +18,49 @@ var worldSource = new VectorTileSource({
 
 export class App {
   private running = false;
-  private countries: Map<string, Country> = new Map();
   private worldMap: WorldMap;
   private calendar: Calendar;
+  private game: Game;
 
   private countryStatistics: CountryStatisticsView;
   private calendarView: CalendarView;
 
   constructor() {
-    worldSource.on('tileloadend',(event) => {
-      (event.tile as any).features_.forEach((feature: Feature<any>) => {
-        const id = feature.getId();
-        if (typeof id !== 'string') {
-          return;
-        }
-
-        const countryProps = feature.getProperties();
-        this.countries.set(id, new Country(id, countryProps.name, countryProps.pop_est));
-      });
-    });
+    
     this.worldMap = new WorldMap(worldSource);
     this.worldMap.onCountryChanged((payload) => {
-      const country = this.countries.get(payload.id);
+      this.game.onCountrySelected(payload.id);
 
-      if (!country) {
+      if (!this.game.selectedCountry) {
         this.countryStatistics.close();
         return;
       }
-      this.countryStatistics.setCountry(country);
+      this.countryStatistics.setCountry(this.game.selectedCountry);
       this.countryStatistics.open();
     });
     this.calendar = new Calendar();
+    this.game = new Game(worldSource, this.calendar);
 
     const appElement = document.getElementById('app') as HTMLDivElement;
 
     this.countryStatistics = new CountryStatisticsView(appElement);
     this.calendarView = new CalendarView(appElement);
-
   }
+
+  /*const timeToHappen = 1600;
+
+  onDayChanged() {
+    const chance = Math.random() * 200;
+    accumulatedChance += chance;
+    if (currentTime >= this.timeToHappen) {
+      doTheDo();
+    }
+  }*/
 
   start() {
     this.running = true;
     const updateFunc = () => {
-      this.calendar.tick(21 * 1000);
+      this.calendar.tick(10 * 60 * 1000);
       this.calendarView.onCalendarUpdated(this.calendar.currentDate);
       window.requestAnimationFrame(updateFunc);
     }
