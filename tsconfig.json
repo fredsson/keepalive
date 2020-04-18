@@ -5,13 +5,12 @@
       "target": "ES2015",
       "noImplicitAny": true,
       "strict": true,
-      "noUnusedLocals": true,
+      "noUnusedLocals": false,
       "removeComments": true,
       "preserveConstEnums": true,
       "sourceMap": true,
       "outDir": "dist",
       "rootDir": "./src",
-      "baseUrl": "src",
   },
   "include": ["src/**/*.ts"]
 }

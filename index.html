@@ -4,13 +4,38 @@
   <title>Keep humanity alive</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/css/ol.css" type="text/css">
   <style>
-    #basicMap {
+    #app {
+      position: relative;
+    }
+    #world-map {
       width: 100vw;
       height: 100vh;
+    }
+    #country-stats {
+      position: absolute;
+      top: 40px;
+      left: 20px;
+      background-color: #3b3b3b;
+      color: #fff;
+      padding: 10px;
+      border: 2px solid red;
+      border-radius: 10px;
+      z-index: 500;
+    }
+    #country-stats > span {
+      display: block;
+    }
+    #country-stats > h1 {
+      margin: 0;
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div id="basicMap"></div>
+  <div id="app">
+    <div id="world-map"></div>
+  </div>
 </body>
 </html>
