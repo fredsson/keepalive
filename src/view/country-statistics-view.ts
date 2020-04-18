@@ -1,4 +1,4 @@
-import { Country } from "../country";
+import { Country } from "../model/country";
 
 export class CountryStatisticsView {
   rootElement: HTMLDivElement;
@@ -8,7 +8,7 @@ export class CountryStatisticsView {
   immuneElement: HTMLSpanElement;
   deceasedElement: HTMLSpanElement;
 
-  constructor(private container: HTMLDivElement) {
+  constructor(container: HTMLDivElement) {
     this.rootElement = document.createElement('div');
     this.rootElement.id = 'country-stats';
     this.rootElement.classList.add('hidden');
@@ -25,7 +25,7 @@ export class CountryStatisticsView {
     this.rootElement.appendChild(this.infectedElement);
     this.rootElement.appendChild(this.immuneElement);
     this.rootElement.appendChild(this.deceasedElement);
-    this.container.appendChild(this.rootElement);
+    container.appendChild(this.rootElement);
   }
 
   public open() {
