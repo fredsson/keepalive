@@ -1,5 +1,5 @@
 import { Country } from "../model/country";
-import { CountrySubject } from "../model/game";
+import { CountryChangedSubject } from "../model/game";
 
 export interface ActionCommands {
   sendResearchTeamCommand: () => void;
@@ -9,7 +9,7 @@ export class ActionView {
   private rootElement: HTMLDivElement;
   private allButtons: HTMLButtonElement[] = [];
 
-  constructor(container: HTMLDivElement, countrySubject: CountrySubject, commands: ActionCommands) {
+  constructor(container: HTMLDivElement, countrySubject: CountryChangedSubject, commands: ActionCommands) {
     this.rootElement = document.createElement('div');
     this.rootElement.id = 'actions-container';
     this.rootElement.classList.add('view-container');

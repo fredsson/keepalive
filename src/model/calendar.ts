@@ -1,6 +1,10 @@
-import { Subject, Observer } from "../util/subject";
+import { Subject, Observer, Subscription } from "../util/subject";
 
-export class Calendar {
+export interface CalendarSubject {
+  onHourChanged(observer: Observer<void>): Subscription;
+}
+
+export class Calendar implements CalendarSubject {
   private HourChangedSubject = new Subject<void>();
   private date: Date;
   private unixTime: number;

@@ -41,7 +41,7 @@ export class App {
 
     this.countryStatistics = new CountryStatisticsView(appElement, this.game);
     this.calendarView = new CalendarView(appElement);
-    this.actionView = new ActionView(appElement, this.game, {sendResearchTeamCommand: () => {}});
+    this.actionView = new ActionView(appElement, this.game, {sendResearchTeamCommand: () => this.game.addResearchTeam()});
     this.playerView = new PlayerView(appElement, this.game.playerSubject);
   }
 
