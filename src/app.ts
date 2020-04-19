@@ -8,6 +8,7 @@ import { Game } from "./model/game";
 import { ActionView } from "./view/action-view";
 
 import './styles/styles.scss';
+import { PlayerView } from "./view/player-view";
 
 var worldSource = new VectorTileSource({
   maxZoom: 15,
@@ -26,6 +27,7 @@ export class App {
   private countryStatistics: CountryStatisticsView;
   private calendarView: CalendarView;
   private actionView: ActionView;
+  private playerView: PlayerView;
 
   constructor() {
     this.worldMap = new WorldMap(worldSource);
@@ -46,7 +48,8 @@ export class App {
 
     this.countryStatistics = new CountryStatisticsView(appElement);
     this.calendarView = new CalendarView(appElement);
-    this.actionView = new ActionView(appElement);
+    this.actionView = new ActionView(appElement, {sendResearchTeamCommand: () => {}});
+    this.playerView = new PlayerView(appElement, this.game.playerSubject);
   }
 
   /*const timeToHappen = 1600;

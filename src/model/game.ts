@@ -4,12 +4,14 @@ import { AccumulatedRandom } from "../util/accumulated-random";
 import { Country } from "./country";
 import VectorTileSource from 'ol/source/VectorTile';
 import { Feature } from "ol";
+import { Player, PlayerReplaySubject } from "./player";
 
 export class Game {
   private countries: Map<string, Country> = new Map();
   private activeViruses: Virus[] = [];
   private virusOutbreakChance = new AccumulatedRandom(0.00007);
   private activeCountry: Country | undefined;
+  private player: Player = new Player();
 
   constructor(worldSource: VectorTileSource, calendar: Calendar) {
     this.init(worldSource, calendar);
@@ -21,6 +23,10 @@ export class Game {
 
   public get selectedCountry() {
     return this.activeCountry;
+  }
+
+  public get playerSubject(): PlayerReplaySubject {
+    return this.player
   }
 
   private init(worldSource: VectorTileSource, calendar: Calendar) {

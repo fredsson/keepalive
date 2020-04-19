@@ -13,9 +13,28 @@ export class Subject<T> {
     };
   }
 
-  public notify(payload: T) {
+  public notify(payload: T): void {
     this.observers.forEach((o) => {
       o(payload);
     });
   }
+}
+
+export class ReplaySubject<T> extends Subject<T> {
+  private lastPayload: T | undefined;
+
+  public attach(observer: Observer<T>): Subscription {
+    const sub = super.attach(observer);
+    if (this.lastPayload) {
+      observer(this.lastPayload);
+    }
+
+    return sub;
+  }
+
+  public notify(payload: T): void {
+    this.lastPayload = payload;
+    super.notify(payload);
+  }
+
 }

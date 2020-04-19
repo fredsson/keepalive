@@ -20,16 +20,25 @@
 #country-stats {
   top: 40px;
   left: 20px;
-}
-#country-stats > span {
-  display: block;
-}
-#country-stats > h1 {
-  margin: 0;
+  & > span {
+    display: block;
+  }
+  & > h1 {
+    margin: 0;
+  }
 }
 #date-container {
   top: 40px;
   right: 20px;
+}
+#player-container {
+  top: 100px;
+  right: 20px;
+  width: 100px;
+  height: 100px;
+  & > span {
+    display: block;
+  }
 }
 #actions-container {
   bottom: 40px;
