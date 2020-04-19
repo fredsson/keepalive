@@ -1,5 +1,5 @@
 import { Virus } from "./virus";
-import { Observer, Subject, Subscription } from "../subject";
+import { Observer, Subject, Subscription } from "../util/subject";
 
 interface PopulationChangedEvent {
   population: number;

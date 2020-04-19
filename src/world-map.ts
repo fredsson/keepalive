@@ -7,7 +7,7 @@ import VectorTileSource from 'ol/source/VectorTile';
 import Style from "ol/style/Style";
 import Stroke from "ol/style/Stroke";
 import Fill from "ol/style/Fill";
-import { Subject, Observer, Subscription } from "./subject";
+import { Subject, Observer, Subscription } from "./util/subject";
 
 let selectedId: string | number | undefined;
 

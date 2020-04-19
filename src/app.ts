@@ -1,12 +1,13 @@
 import { WorldMap } from "./world-map";
 import VectorTileSource from 'ol/source/VectorTile';
 import MVT from 'ol/format/MVT';
-import { Feature } from "ol";
-import { Country } from "./model/country";
 import { CountryStatisticsView } from "./view/country-statistics-view";
 import { Calendar } from "./model/calendar";
 import { CalendarView } from "./view/calendar-view";
 import { Game } from "./model/game";
+import { ActionView } from "./view/action-view";
+
+import './styles/styles.scss';
 
 var worldSource = new VectorTileSource({
   maxZoom: 15,
@@ -24,9 +25,9 @@ export class App {
 
   private countryStatistics: CountryStatisticsView;
   private calendarView: CalendarView;
+  private actionView: ActionView;
 
   constructor() {
-    
     this.worldMap = new WorldMap(worldSource);
     this.worldMap.onCountryChanged((payload) => {
       this.game.onCountrySelected(payload.id);
@@ -45,6 +46,7 @@ export class App {
 
     this.countryStatistics = new CountryStatisticsView(appElement);
     this.calendarView = new CalendarView(appElement);
+    this.actionView = new ActionView(appElement);
   }
 
   /*const timeToHappen = 1600;

@@ -6,6 +6,7 @@ export class CalendarView {
   constructor(container: HTMLDivElement) {
     this.rootElement = document.createElement('div');
     this.rootElement.id = 'date-container';
+    this.rootElement.classList.add('view-container');
 
     this.dateElement = document.createElement('span');
 

@@ -1,5 +1,5 @@
 import { Country } from "../model/country";
-import { Subscription } from "../subject";
+import { Subscription } from "../util/subject";
 
 export class CountryStatisticsView {
   rootElement: HTMLDivElement;
@@ -14,6 +14,7 @@ export class CountryStatisticsView {
   constructor(container: HTMLDivElement) {
     this.rootElement = document.createElement('div');
     this.rootElement.id = 'country-stats';
+    this.rootElement.classList.add('view-container');
     this.rootElement.classList.add('hidden');
 
     this.nameElement = document.createElement('h1');

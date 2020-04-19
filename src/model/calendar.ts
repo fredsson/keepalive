@@ -1,4 +1,4 @@
-import { Subject, Observer } from "../subject";
+import { Subject, Observer } from "../util/subject";
 
 export class Calendar {
   private HourChangedSubject = new Subject<void>();
