@@ -1,0 +1,53 @@
+#Virus
+* spread based on how many are infected
+
+
+# Player
+* Should have a budget they can use to help stop the spread
+* budget
+  * received from each country
+* spend budget
+  * find infected people
+  * find death rate of virus
+  * send research team
+  * build hospitals
+  * stimilus package (for production of medical equipment)
+  * research vaccine
+* popularity (authority)
+  * increases as more infected are found
+  * martial law
+  * enforce recommendations
+  * close airports / harbour (quarantine country)
+  * nuke country
+
+* each country has a breaking point, when breaking point is reached people stop following recommendations & virus starts to spread again
+* countries in quarantine gives less funds to player
+
+# additional lose condition
+* global economy crashes
+* full panic mode
+
+TODO country overlay
+# Country
+  # Name (Translations?) DONE
+  # population DONE
+  # infected DONE
+  # immune DONE
+  # deceased DONE
+
+
+# remove current president
+
+
+#VIRUS
+# name (generated)
+#spread rate
+#country of origin
+#mortality rate
+
+https://pernyblom.github.io/abundant-music/
+
+
+#### NICE TO HAVE ####
+* change buttons to draggable miniatures
+* spend budget to get more research teams
