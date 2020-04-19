@@ -17,8 +17,8 @@ export class Game {
     this.init(worldSource, calendar);
   }
 
-  public onCountrySelected(countryId: string) {
-    this.activeCountry = this.countries.get(countryId);
+  public onCountrySelected(countryId?: string) {
+    this.activeCountry = countryId ? this.countries.get(countryId) : undefined;
   }
 
   public get selectedCountry() {

@@ -8,8 +8,7 @@ import Style from "ol/style/Style";
 import Stroke from "ol/style/Stroke";
 import Fill from "ol/style/Fill";
 import { Subject, Observer, Subscription } from "./util/subject";
-
-let selectedId: string | number | undefined;
+import { FeatureLike } from "ol/Feature";
 
 const countryStyle = new Style({
   stroke: new Stroke({
@@ -31,15 +30,16 @@ const selectedCountryStyle = new Style({
   })
 });
 
-interface CountryChanged {
-  id: string;
+interface CountryChangedPayload {
+  id?: string;
 }
 
 export class WorldMap {
   private worldLayer: VectorTileLayer;
   private selectedCountryLayer: VectorTileLayer;
   private openLayerMap: OpenLayerMap;
-  private subject: Subject<CountryChanged>;
+  private subject: Subject<CountryChangedPayload>;
+  private selectedCountryId: string | undefined;
 
   constructor(worldSource: VectorTileSource) {
     this.subject = new Subject();
@@ -52,11 +52,7 @@ export class WorldMap {
     this.selectedCountryLayer = new VectorTileLayer({
       renderMode: 'vector',
       source: worldSource,
-      style: function(feature) {
-        if (feature.getId() === selectedId) {
-          return selectedCountryStyle;
-        }
-      }
+      style: feature => feature.getId() === this.selectedCountryId ? selectedCountryStyle : undefined
     });
 
     this.openLayerMap = new OpenLayerMap({
@@ -77,25 +73,18 @@ export class WorldMap {
 
     this.openLayerMap.on('click', async (event) => {
       const features = await this.openLayerMap.getFeaturesAtPixel(event.pixel);
-      if (!features.length) {
-        selectedId = undefined;
-        this.subject.notify({id: ''});
-        this.selectedCountryLayer.changed();
-        return;
-      }
-
-      const feature = features[0];
-      if (selectedId === feature.getId()) {
-        selectedId = undefined;
-      } else {
-        selectedId = feature.getId();
-      }
-      this.selectedCountryLayer.changed();
-      this.subject.notify({id: selectedId?.toString() || ''});
+      this.handleCountryClicked(features[0])
     });
   }
 
-  public onCountryChanged(observer: Observer<CountryChanged>): Subscription {
+  public onCountryChanged(observer: Observer<CountryChangedPayload>): Subscription {
     return this.subject.attach(observer);
+  }
+
+  private handleCountryClicked(feature?: FeatureLike) {
+    const shouldSelectCountry = (feature && feature.getId() !== this.selectedCountryId);
+    this.selectedCountryId = shouldSelectCountry ? feature!.getId().toString() : undefined;
+    this.selectedCountryLayer.changed();
+    this.subject.notify({id: this.selectedCountryId});
   }
 }
