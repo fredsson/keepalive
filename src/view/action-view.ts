@@ -1,4 +1,5 @@
 import { Country } from "../model/country";
+import { CountrySubject } from "../model/game";
 
 export interface ActionCommands {
   sendResearchTeamCommand: () => void;
@@ -8,7 +9,7 @@ export class ActionView {
   private rootElement: HTMLDivElement;
   private allButtons: HTMLButtonElement[] = [];
 
-  constructor(container: HTMLDivElement, commands: ActionCommands) {
+  constructor(container: HTMLDivElement, countrySubject: CountrySubject, commands: ActionCommands) {
     this.rootElement = document.createElement('div');
     this.rootElement.id = 'actions-container';
     this.rootElement.classList.add('view-container');
@@ -22,10 +23,10 @@ export class ActionView {
     container.appendChild(this.rootElement);
 
     this.disableButtons();
-  }
 
-  public setCountry(country?: Country) {
-    (country ? this.enableButtons() : this.disableButtons());
+    countrySubject.onSelectedCountryChanged(payload => {
+      (payload.country ? this.enableButtons() : this.disableButtons());
+    });
   }
 
   private disableButtons() {

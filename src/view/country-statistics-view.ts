@@ -1,5 +1,6 @@
 import { Country } from "../model/country";
 import { Subscription } from "../util/subject";
+import { CountrySubject } from "../model/game";
 
 export class CountryStatisticsView {
   rootElement: HTMLDivElement;
@@ -11,7 +12,7 @@ export class CountryStatisticsView {
 
   private subscription: Subscription | undefined = undefined;
 
-  constructor(container: HTMLDivElement) {
+  constructor(container: HTMLDivElement, countrySubject: CountrySubject) {
     this.rootElement = document.createElement('div');
     this.rootElement.id = 'country-stats';
     this.rootElement.classList.add('view-container');
@@ -30,29 +31,29 @@ export class CountryStatisticsView {
     this.rootElement.appendChild(this.immuneElement);
     this.rootElement.appendChild(this.deceasedElement);
     container.appendChild(this.rootElement);
-  }
 
-  public open() {
-    this.rootElement.classList.remove('hidden');
-  }
+    countrySubject.onSelectedCountryChanged(payload => {
+      if (this.subscription) {
+        this.subscription();
+      }
+      const country = payload.country;
 
-  public close() {
-    this.rootElement.classList.add('hidden')
-  }
+      if (!country) {
+        this.rootElement.classList.add('hidden');
+        return;
+      }
 
-  public setCountry(country: Country) {
-    if (this.subscription) {
-      this.subscription();
-    }
+      this.rootElement.classList.remove('hidden');
 
-    this.subscription = country.onPopulationChanged(payload => {
-      this.populationElement.innerText = payload.population.toString();
-      this.deceasedElement.innerText = payload.noOfDeceased.toString();
+      this.subscription = country.onPopulationChanged(payload => {
+        this.populationElement.innerText = payload.population.toString();
+        this.deceasedElement.innerText = payload.noOfDeceased.toString();
+      });
+      this.nameElement.innerText = country.name;
+      this.populationElement.innerText = country.currentPopulation.toString();
+      this.infectedElement.innerText = country.infected.toString();
+      this.immuneElement.innerText = country.immune.toString();
+      this.deceasedElement.innerText = country.deceased.toString();
     });
-    this.nameElement.innerText = country.name;
-    this.populationElement.innerText = country.currentPopulation.toString();
-    this.infectedElement.innerText = country.infected.toString();
-    this.immuneElement.innerText = country.immune.toString();
-    this.deceasedElement.innerText = country.deceased.toString();
   }
 }

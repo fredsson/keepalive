@@ -5,8 +5,19 @@ import { Country } from "./country";
 import VectorTileSource from 'ol/source/VectorTile';
 import { Feature } from "ol";
 import { Player, PlayerReplaySubject } from "./player";
+import { Subscription, Observer, ReplaySubject } from "../util/subject";
 
-export class Game {
+export interface SelectedCountryChangedPayload {
+  country?: Country;
+}
+
+export interface CountrySubject {
+  onSelectedCountryChanged(observer: Observer<SelectedCountryChangedPayload>): Subscription;
+}
+
+export class Game implements CountrySubject {
+  private selectedCountrySubject = new ReplaySubject<SelectedCountryChangedPayload>();
+
   private countries: Map<string, Country> = new Map();
   private activeViruses: Virus[] = [];
   private virusOutbreakChance = new AccumulatedRandom(0.00007);
@@ -19,14 +30,15 @@ export class Game {
 
   public onCountrySelected(countryId?: string) {
     this.activeCountry = countryId ? this.countries.get(countryId) : undefined;
-  }
-
-  public get selectedCountry() {
-    return this.activeCountry;
+    this.selectedCountrySubject.notify({country: this.activeCountry});
   }
 
   public get playerSubject(): PlayerReplaySubject {
     return this.player
+  }
+
+  public onSelectedCountryChanged(observer: Observer<SelectedCountryChangedPayload>): Subscription {
+    return this.selectedCountrySubject.attach(observer);
   }
 
   private init(worldSource: VectorTileSource, calendar: Calendar) {

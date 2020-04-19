@@ -33,36 +33,19 @@ export class App {
     this.worldMap = new WorldMap(worldSource);
     this.worldMap.onCountryChanged((payload) => {
       this.game.onCountrySelected(payload.id);
-
-      if (!this.game.selectedCountry) {
-        this.countryStatistics.close();
-        return;
-      }
-      this.countryStatistics.setCountry(this.game.selectedCountry);
-      this.countryStatistics.open();
     });
     this.calendar = new Calendar();
     this.game = new Game(worldSource, this.calendar);
 
     const appElement = document.getElementById('app') as HTMLDivElement;
 
-    this.countryStatistics = new CountryStatisticsView(appElement);
+    this.countryStatistics = new CountryStatisticsView(appElement, this.game);
     this.calendarView = new CalendarView(appElement);
-    this.actionView = new ActionView(appElement, {sendResearchTeamCommand: () => {}});
+    this.actionView = new ActionView(appElement, this.game, {sendResearchTeamCommand: () => {}});
     this.playerView = new PlayerView(appElement, this.game.playerSubject);
   }
 
-  /*const timeToHappen = 1600;
-
-  onDayChanged() {
-    const chance = Math.random() * 200;
-    accumulatedChance += chance;
-    if (currentTime >= this.timeToHappen) {
-      doTheDo();
-    }
-  }*/
-
-  start() {
+  public start() {
     this.running = true;
     const updateFunc = () => {
       this.calendar.tick(10 * 60 * 1000);
@@ -75,7 +58,7 @@ export class App {
     }
   }
 
-  pause() {
+  public pause() {
     this.running = false;
   }
 }
